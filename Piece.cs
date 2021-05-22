@@ -1,12 +1,12 @@
 ﻿using System;
 
-enum PieceColor {
+public enum PieceColor {
 	Black,
 	White
 }
 
 public struct Square {
-	public readonly int X Y;
+	public readonly int X, Y;
 
 	public Square(int x, int y) {
 		this.X = x;
@@ -15,8 +15,10 @@ public struct Square {
 }
 
 public abstract class Piece {
-	Square Square = new Square;
+	public PieceColor color;
+	private Square Square = new Square();
 
-	public void Piece() {
+	public Piece(PieceColor color) {
+		this.color = color;
 	}
 }
