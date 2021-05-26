@@ -16,9 +16,15 @@ public struct Square {
 
 public abstract class Piece {
 	public PieceColor color;
+	protected char CharWhite;
+	protected char CharBlack;
 	private Square Square = new Square();
 
 	public Piece(PieceColor color) {
 		this.color = color;
 	}
+
+    public override string ToString() {
+		return char.ToString(color == PieceColor.White ? CharWhite : CharBlack);
+    }
 }
