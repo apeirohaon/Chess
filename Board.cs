@@ -2,6 +2,7 @@
 
 public class Board {
 	private Piece[,] board;
+	public bool GameEnded;
 
 	public Board() {
 		board = new Piece[8, 8];
@@ -14,7 +15,7 @@ public class Board {
 				board[1, y] = new Knight(PieceColor.White);
 				board[2, y] = new Bishop(PieceColor.White);
 				board[3, y] = new Queen(PieceColor.White);
-				board[4, y] = new King(PieceColor.White);
+				board[4, y] = new King(PieceColor.White, this);
 				board[5, y] = new Bishop(PieceColor.White);
 				board[6, y] = new Knight(PieceColor.White);
 				board[7, y] = new Rook(PieceColor.White);
@@ -34,7 +35,7 @@ public class Board {
 				board[1, y] = new Knight(PieceColor.Black);
 				board[2, y] = new Bishop(PieceColor.Black);
 				board[3, y] = new Queen(PieceColor.Black);
-				board[4, y] = new King(PieceColor.Black);
+				board[4, y] = new King(PieceColor.Black, this);
 				board[5, y] = new Bishop(PieceColor.Black);
 				board[6, y] = new Knight(PieceColor.Black);
 				board[7, y] = new Rook(PieceColor.Black);
@@ -42,8 +43,23 @@ public class Board {
         }
     }
 
+	public bool IsPopulated(int x, int y) {
+		bool pop = (board[x, y] is King ||
+					board[x, y] is Queen ||
+					board[x, y] is Rook ||
+					board[x, y] is Bishop ||
+					board[x, y] is Knight ||
+					board[x, y] is Pawn
+					);
+		return pop;
+    }
+
+	public Piece GetPiece(int x, int y) {
+		return board[x, y];
+    }
+
 	public string BoardDisplay() {
-	string display = "";
+		string display = "";
 		for (int y = 7; y >= 0; y--) {
 			for (int x = 0; x < 8; x++) {
 				if (board[x, y] is Piece) display += board[x, y].ToString();
@@ -52,7 +68,7 @@ public class Board {
 			}
 			display += "\n";
         }
-	return display;
+		return display;
     }
 
 	public void FlipBoard() {
