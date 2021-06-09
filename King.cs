@@ -10,8 +10,8 @@ public class King : Piece {
     }
 
     protected override bool IsObstructed(Square move) {
-        if (containingBoard.IsPopulated(move.X, move.Y)) {
-            if (containingBoard.GetPiece(move.X, move.Y).color == this.color) {
+        if (containingBoard.IsPopulated(move)) {
+            if (containingBoard.GetPiece(move).color == this.color) {
                 return true;
             }
         }
@@ -24,6 +24,19 @@ public class King : Piece {
     }
 
     public void CheckIfChecked() {
-
+        bool isInCheck = false;
+        Piece currentPiece;
+        Square currentSquare;
+        for (int i = 0; i < 8; i++) {
+            currentSquare.X = i;
+            for (int j = 0; j < 8; j++) {
+                currentSquare.Y = j;
+                currentPiece = this.containingBoard.GetPiece(currentSquare);
+                if (currentPiece != null) {
+                    if (currentPiece.IsAttacking(this.square)) isInCheck = true;
+                }
+            }
+        }
+        this.IsInCheck = isInCheck;
     }
 }

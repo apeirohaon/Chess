@@ -11,39 +11,41 @@ public class Board {
 	public void SetBoard() {
 		for (int y = 0; y < 8; y++) {
 			if (y == 0) {
-				board[0, y] = new Rook(PieceColor.White);
-				board[1, y] = new Knight(PieceColor.White);
-				board[2, y] = new Bishop(PieceColor.White);
-				board[3, y] = new Queen(PieceColor.White);
-				board[4, y] = new King(PieceColor.White, this);
-				board[5, y] = new Bishop(PieceColor.White);
-				board[6, y] = new Knight(PieceColor.White);
-				board[7, y] = new Rook(PieceColor.White);
+				board[0, y] = new Rook(this, PieceColor.White, 0, y);
+				board[1, y] = new Knight(this, PieceColor.White, 1, y);
+				board[2, y] = new Bishop(this, PieceColor.White, 2, y);
+				board[3, y] = new Queen(this, PieceColor.White, 3, y);
+				board[4, y] = new King(this, PieceColor.White, 4, y);
+				board[5, y] = new Bishop(this, PieceColor.White, 5, y);
+				board[6, y] = new Knight(this, PieceColor.White, 6, y);
+				board[7, y] = new Rook(this, PieceColor.White, 7, y);
 			}
 			if (y == 1) {
 				for (int x = 0; x < 8; x++) {
-					board[x, y] = new Pawn(PieceColor.White);
+					board[x, y] = new Pawn(this, PieceColor.White, x, y);
                 }
             }
 			if (y == 6) {
 				for (int x = 0; x < 8; x++) {
-					board[x, y] = new Pawn(PieceColor.Black);
+					board[x, y] = new Pawn(this, PieceColor.Black, x, y);
 				}
 			}
 			if (y == 7) {
-				board[0, y] = new Rook(PieceColor.Black);
-				board[1, y] = new Knight(PieceColor.Black);
-				board[2, y] = new Bishop(PieceColor.Black);
-				board[3, y] = new Queen(PieceColor.Black);
-				board[4, y] = new King(PieceColor.Black, this);
-				board[5, y] = new Bishop(PieceColor.Black);
-				board[6, y] = new Knight(PieceColor.Black);
-				board[7, y] = new Rook(PieceColor.Black);
+				board[0, y] = new Rook(this, PieceColor.Black, 0, y);
+				board[1, y] = new Knight(this, PieceColor.Black, 1, y);
+				board[2, y] = new Bishop(this, PieceColor.Black, 2, y);
+				board[3, y] = new Queen(this, PieceColor.Black, 3, y);
+				board[4, y] = new King(this, PieceColor.Black, 4, y);
+				board[5, y] = new Bishop(this, PieceColor.Black, 5, y);
+				board[6, y] = new Knight(this, PieceColor.Black, 6, y);
+				board[7, y] = new Rook(this, PieceColor.Black, 7, y);
 			}
         }
     }
 
-	public bool IsPopulated(int x, int y) {
+	public bool IsPopulated(Square sq) {
+		int x = sq.X;
+		int y = sq.Y;
 		bool pop = (board[x, y] is King ||
 					board[x, y] is Queen ||
 					board[x, y] is Rook ||
@@ -54,8 +56,16 @@ public class Board {
 		return pop;
     }
 
-	public Piece GetPiece(int x, int y) {
-		return board[x, y];
+	public Piece GetPiece(Square sq) {
+		return board[sq.X, sq.Y];
+    }
+
+	public void SetPiece(Square sq, Piece piece) {
+		board[sq.X, sq.Y] = piece;
+    }
+
+	public void RemovePiece(Square sq) {
+		board[sq.X, sq.Y] = null;
     }
 
 	public string BoardDisplay() {

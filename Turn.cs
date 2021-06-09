@@ -47,7 +47,7 @@ public class Turn {
                 throw new InvalidOperationException("Column letter not in range.");
         }
 
-        rowNum = Int32.Parse(row);
+        rowNum = Int32.Parse(row) - 1;
 
         square.X = colNum;
         square.Y = rowNum;
@@ -55,5 +55,20 @@ public class Turn {
         return square;
     }
 
+    public static void PopulateLists(Board board) {
+        Piece currentPiece;
+        Square currentSquare;
+        for (int i = 0; i < 8; i++) {
+            currentSquare.X = i;
+            for (int j = 0; j < 8; j++) {
+                currentSquare.Y = j;
+                currentPiece = board.GetPiece(currentSquare);
 
+                if (currentPiece != null) {
+                    currentPiece.PopulateLegalMoves();
+                    currentPiece.PopulateSquaresAttacking();
+                }
+            }
+        }
+    }
 }

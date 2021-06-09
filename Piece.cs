@@ -3,16 +3,25 @@ using System.Collections.Generic;
 
 public enum PieceColor {
 	Black,
-	White
+    White
 }
 
 public struct Square {
-	public int X, Y;
+    public int X, Y;
 
-	public Square(int x, int y) {
-		this.X = x;
-		this.Y = y;
-	}
+    public Square(int x, int y) {
+        this.X = x;
+        this.Y = y;
+    }
+
+    public override string ToString() {
+		return $"{X}, {Y}";
+    }
+
+    public override bool Equals(object obj) {
+		Square sq = (Square) obj;
+		return (this.X == sq.X) && (this.Y == sq.Y);
+    }
 }
 
 public abstract class Piece {
@@ -35,6 +44,22 @@ public abstract class Piece {
 		return char.ToString(color == PieceColor.White ? CharWhite : CharBlack);
     }
 
+	public bool MovePiece(Square orig, Square dest) {
+		if (!legalMoveList.Contains(dest)) return false;
+		//CHECK IF MOVE CREATES CHECK
+		containingBoard.RemovePiece(orig);
+		containingBoard.SetPiece(dest, this);
+		return true;
+    }
+
+	public bool IsAttacking(Square sq) {
+		bool attacking = false;
+		for (int i = 0; i < legalMoveList.Count; i++) {
+			if (legalMoveList[i].Equals(sq)) attacking = true;
+        }
+		return attacking;
+    }
+
 	public void PopulateLegalMoves() {
 		Square testingSquare = new Square(-1, -1);
 		for (int y = 0; y < 8; y++) {
@@ -48,7 +73,7 @@ public abstract class Piece {
 
 	public void PopulateSquaresAttacking() {
 		foreach (Square sq in legalMoveList) {
-			if (containingBoard.IsPopulated(sq.X, sq.Y) && (containingBoard.GetPiece(sq.X, sq.Y).color != this.color)) {
+			if (containingBoard.IsPopulated(sq) && (containingBoard.GetPiece(sq).color != this.color)) {
 				squaresAttacking.Add(sq);
             }
         }
