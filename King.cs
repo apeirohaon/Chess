@@ -1,17 +1,16 @@
 using System;
 
 public class King : Piece {
-    public bool IsInCheck;
 
     public King(Board board, PieceColor color, int xcoord, int ycoord) : base(board, color, xcoord, ycoord) {
+        type = PieceType.King;
         CharWhite = 'K';
         CharBlack = 'k';
-        IsInCheck = false;
     }
 
     protected override bool IsObstructed(Square move) {
         if (containingBoard.IsPopulated(move)) {
-            if (containingBoard.GetPiece(move).color == this.color) {
+            if (containingBoard.GetPieceAt(move).color == this.color) {
                 return true;
             }
         }
@@ -19,24 +18,23 @@ public class King : Piece {
     }
 
     protected override bool IsValid(Square move) {
-        if ((Math.Abs(move.X - square.X) <= 1) && (Math.Abs(move.Y - square.Y) <= 1)) return true;
-        return false;
+        return ((Math.Abs(move.X - square.X) <= 1) && (Math.Abs(move.Y - square.Y) <= 1) && !move.Equals(square));
     }
 
-    public void CheckIfChecked() {
-        bool isInCheck = false;
+    public bool InCheck() {
         Piece currentPiece;
         Square currentSquare;
-        for (int i = 0; i < 8; i++) {
+        for (int i = 1; i <= 8; i++) {
             currentSquare.X = i;
-            for (int j = 0; j < 8; j++) {
+            for (int j = 1; j <= 8; j++) {
                 currentSquare.Y = j;
-                currentPiece = this.containingBoard.GetPiece(currentSquare);
-                if (currentPiece != null) {
-                    if (currentPiece.IsAttacking(this.square)) isInCheck = true;
+                currentPiece = this.containingBoard.GetPieceAt(currentSquare);
+                if (currentPiece != null && currentPiece.color != this.color) {
+                    if (currentPiece.IsAttacking(this.square))
+                        return true;
                 }
             }
         }
-        this.IsInCheck = isInCheck;
+        return false;
     }
 }

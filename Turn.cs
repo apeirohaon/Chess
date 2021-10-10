@@ -20,34 +20,34 @@ public class Turn {
 
         switch (col) {
             case "a":
-                colNum = 0;
-                break;
-            case "b":
                 colNum = 1;
                 break;
-            case "c":
+            case "b":
                 colNum = 2;
                 break;
-            case "d":
+            case "c":
                 colNum = 3;
                 break;
-            case "e":
+            case "d":
                 colNum = 4;
                 break;
-            case "f":
+            case "e":
                 colNum = 5;
                 break;
-            case "g":
+            case "f":
                 colNum = 6;
                 break;
-            case "h":
+            case "g":
                 colNum = 7;
+                break;
+            case "h":
+                colNum = 8;
                 break;
             default:
                 throw new InvalidOperationException("Column letter not in range.");
         }
 
-        rowNum = Int32.Parse(row) - 1;
+        rowNum = Int32.Parse(row);
 
         square.X = colNum;
         square.Y = rowNum;
@@ -55,20 +55,4 @@ public class Turn {
         return square;
     }
 
-    public static void PopulateLists(Board board) {
-        Piece currentPiece;
-        Square currentSquare;
-        for (int i = 0; i < 8; i++) {
-            currentSquare.X = i;
-            for (int j = 0; j < 8; j++) {
-                currentSquare.Y = j;
-                currentPiece = board.GetPiece(currentSquare);
-
-                if (currentPiece != null) {
-                    currentPiece.PopulateLegalMoves();
-                    currentPiece.PopulateSquaresAttacking();
-                }
-            }
-        }
-    }
 }
